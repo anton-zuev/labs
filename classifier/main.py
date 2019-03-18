@@ -21,6 +21,7 @@ from pandas import DataFrame
 def NaiveBayes(dataset, show=False):
     gnb = GaussianNB()
     X, labels = dataset
+
     return gnb.fit(X, labels)
 
 
@@ -53,7 +54,7 @@ def MyBayes(dataset, show=False):
     X0 = np.array(X[Y <= 0]).astype(int)
     X1 = np.array(X[Y > 0]).astype(int)
     freq0, freq1, ctgr0, ctgr1 = [], [], [], []
-    print(X0,X1)
+    print(X0, X1)
     print(Y)
     for j in range(0, X.shape[1]):
         ct0 = np.unique(X0[:, j])
@@ -80,8 +81,8 @@ def MyBayesTest(dataset, model, show=False):
         for n in range(0, pred_score_train.shape[0]):
             idx0 = [i for i, v in enumerate(ctgr0[j]) if (v == int(X[n, j]))]
             idx1 = [i for i, v in enumerate(ctgr1[j]) if (v == int(X[n, j]))]
-            print(idx0,idx1)
-            print(ctgr0[j],int(X[n, j]))
+            print(idx0, idx1)
+            print(ctgr0[j], int(X[n, j]))
             p0 = 0.0001
             p1 = 0.0001
             if idx0:
@@ -91,7 +92,7 @@ def MyBayesTest(dataset, model, show=False):
 
             pred_score_train[n, 1] += -np.math.log(p0) + np.math.log(p1)
 
-    print("score = ",pred_score_train)
+    print("score = ", pred_score_train)
     return pred_score_train
 
 
@@ -165,21 +166,12 @@ def paint(x, y, label, title=None):
 if __name__ == "__main__":
     dataset = load_iris(return_X_y=True)
 
-    x,y= dataset
+    x, y = dataset
     y_id = np.nonzero(y < 2)
 
     x = x[y_id]
     y = y[y_id]
-    dataset = x,y
-    model  = MyBayes(dataset)
+    dataset = x, y
+    model = MyBayes(dataset)
 
-    MyBayesTest(dataset,model)
-
-    # func = [
-    #     NaiveBayes,
-    #     GaussianClassifier,
-    #     pca
-    # ]
-    # for x in func:
-    #     print(x)
-    #     x(dataset, show=True)
+    MyBayesTest(dataset, model)
